@@ -1,6 +1,6 @@
-# Pulpomatic OpenAID
+# Adonde App
 
-Application to get AID global information
+Application to manage and sharing services between cab drivers
 
 ## General folder structure
 
