@@ -11,7 +11,7 @@ const loginSchema = joi.object({
     .required()
     .messages({
       "any.required":
-        "password does not fullfill the requirements. At least one letter lowercase, one uppercase, one digit and one special character",
+        "password does not fullfill the requirements. At least one letter lowercase, one uppercase, one digit and one special character ",
     }),
 });
 
