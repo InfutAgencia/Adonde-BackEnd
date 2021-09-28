@@ -1,9 +1,15 @@
 import joi from "joi";
 
 const createUserSchema = joi.object({
-  username: joi.string().trim().lowercase().required().messages({
-    "any.required": "username is required (Lower case)",
-  }),
+  username: joi
+    .string()
+    .trim()
+    .lowercase()
+    .required()
+    .valid(joi.ref("email"))
+    .messages({
+      "any.required": "username is required (Lower case)",
+    }),
   password: joi
     .string()
     .trim()
@@ -13,6 +19,7 @@ const createUserSchema = joi.object({
       "any.required":
         "password does not fullfill the requirements. At least one letter lowercase, one uppercase, one digit and one special character",
     }),
+  isActive: joi.boolean().required().default(false),
 });
 
 export default createUserSchema;
