@@ -4,18 +4,34 @@ import boom from "@hapi/boom";
 import userDao from "../dao";
 import env from "../../../../configs";
 
-const createUser = async (username, password) => {
-  const validateUniqueUsername = await userDao.findUserByUsername(username);
+const createUser = async ({ ...newUser }) => {
+  const validateUniqueUsername = await userDao.findUserByUsername(
+    newUser.username
+  );
 
-  if (validateUniqueUsername) throw boom.badRequest("Username already exists");
+  if (validateUniqueUsername)
+    throw boom.badRequest(`${newUser.username} already exists`);
 
-  const encryptedPassword = cryptoJs.AES.encrypt(password, env.CRYPTO_SECRET);
-  password = encryptedPassword;
+  const encryptedPassword = cryptoJs.AES.encrypt(
+    newUser.password,
+    env.CRYPTO_SECRET
+  );
+  newUser.password = encryptedPassword;
 
-  const createdUser = await userDao.newUser({ username, password });
+  try {
+    let createdUser = await userDao.createUser(newUser);
+    newUser.user = createdUser._id;
+    newUser.driverLicense = "null";
+    newUser.criminalRecordCertificate = "null";
+    newUser.photo = "null";
 
-  if (!createdUser) throw boom.internal("Error trying to create new user");
-  return createdUser;
+    if (newUser.role === "DRIVER")
+      createdUser = await userDao.createDriver(newUser);
+
+    return createdUser;
+  } catch (error) {
+    throw boom.internal(`Error trying to create new user:  ${error}`);
+  }
 };
 
 export default createUser;
