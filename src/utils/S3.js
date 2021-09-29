@@ -7,9 +7,9 @@ export default class S3Utility {
 
   constructor() {
     aws.config.update({
-      region: config.awsRegion,
-      accessKeyId: config.s3AccessKey,
-      secretAccessKey: config.s3SecretKey,
+      region: config.AWS_REGION,
+      accessKeyId: config.AWS_ACCESS_KEY_ID,
+      secretAccessKey: config.AWS_SECRET_KEY,
     });
 
     const s3 = new aws.S3();

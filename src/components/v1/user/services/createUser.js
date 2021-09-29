@@ -1,10 +1,12 @@
 import cryptoJs from "crypto-js";
 import boom from "@hapi/boom";
-
+import S3Utility from "../../../../utils/S3";
 import userDao from "../dao";
 import env from "../../../../configs";
 
-const createUser = async ({ ...newUser }) => {
+const s3 = new S3Utility();
+
+const createUser = async ({ newUser, files }) => {
   const validateUniqueUsername = await userDao.findUserByUsername(
     newUser.username
   );
@@ -18,20 +20,63 @@ const createUser = async ({ ...newUser }) => {
   );
   newUser.password = encryptedPassword;
 
-  try {
-    let createdUser = await userDao.createUser(newUser);
-    newUser.user = createdUser._id;
-    newUser.driverLicense = "null";
-    newUser.criminalRecordCertificate = "null";
-    newUser.photo = "null";
+  if (files.length !== 3)
+    throw boom.badRequest(`Error, all files are required`);
+  files.forEach((value) => {
+    if (
+      value.fieldname !== "photo" &&
+      value.fieldname !== "driverLicense" &&
+      value.fieldname !== "criminalRecordCertificate"
+    )
+      throw boom.badRequest(
+        `Error (photo, driverLicense, criminalRecordCertificate) are required`
+      );
 
-    if (newUser.role === "DRIVER")
-      createdUser = await userDao.createDriver(newUser);
+    if (
+      value.mimetype !== "image/png" &&
+      value.mimetype !== "application/pdf" &&
+      value.mimetype !== "image/jpeg"
+    )
+      throw boom.badRequest(`Error, file type is not allowed`);
+    return;
+  });
 
-    return createdUser;
-  } catch (error) {
-    throw boom.internal(`Error trying to create new user:  ${error}`);
-  }
+  await Promise.all(
+    files.map(async (file) => {
+      let bucketName =
+        file.fieldname === "photo"
+          ? env.AWS_BUCKET_USER_PHOTOS
+          : env.AWS_BUCKET_DRIVER_DOCUMENTS;
+
+      let uploadPayload = {
+        bufferFile: file.buffer,
+        fileName: `${file.fieldname} - ${newUser.email}`,
+        bucketName: bucketName,
+        mimeType: file.mimetype,
+      };
+
+      let fileUpload = await s3.storeFileBucket(uploadPayload);
+
+      if (!fileUpload.Location)
+        throw boom.badRequest(`Error upload files, Please contact support`);
+
+      if (fileUpload.key.includes("photo")) newUser.photo = fileUpload.Location;
+
+      if (fileUpload.key.includes("License"))
+        newUser.driverLicense = fileUpload.Location;
+
+      if (fileUpload.key.includes("Certificate"))
+        newUser.criminalRecordCertificate = fileUpload.Location;
+    })
+  );
+
+  let createdUser = await userDao.createUser(newUser);
+  newUser.user = createdUser._id;
+
+  if (newUser.role === "DRIVER")
+    createdUser = await userDao.createDriver(newUser);
+
+  return createdUser;
 };
 
 export default createUser;
