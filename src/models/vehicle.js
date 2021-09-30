@@ -3,9 +3,6 @@ const Schema = mongoose.Schema;
 
 const vehicleSchema = mongoose.Schema(
   {
-    driver: {
-      type: Schema.ObjectId,
-    },
     brand: {
       type: String,
       required: true,
@@ -26,13 +23,17 @@ const vehicleSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    identificacion: {
+    identification: {
       type: String,
       required: true,
     },
     photo: {
       type: String,
       required: false,
+    },
+    isActive: {
+      type: Boolean,
+      required: true,
     },
   },
   {

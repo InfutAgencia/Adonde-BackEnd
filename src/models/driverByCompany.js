@@ -9,3 +9,10 @@ const driverByCompanySchema = mongoose.Schema({
     type: Schema.ObjectId,
   },
 });
+
+const driverByCompanyModel = mongoose.model(
+  "driversByCompanies",
+  driverByCompanySchema
+);
+
+export default driverByCompanyModel;

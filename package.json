@@ -33,6 +33,13 @@
     "@babel/preset-env": "^7.15.0"
   },
   "dependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
+    "@babel/plugin-proposal-class-properties": "^7.14.5",
+    "@babel/plugin-proposal-private-methods": "^7.14.5",
+    "@babel/plugin-proposal-private-property-in-object": "^7.14.5",
+    "@babel/preset-env": "^7.15.0",
     "@hapi/boom": "^9.1.4",
     "aws-sdk": "^2.996.0",
     "axios": "^0.21.1",
