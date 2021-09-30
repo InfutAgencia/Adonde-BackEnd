@@ -1,3 +1,4 @@
+import driverModel from "../../../../models/driver";
 import userModel from "../../../../models/user";
 
 const findUserByUsername = (username) =>
@@ -8,12 +9,15 @@ const findUserByUsername = (username) =>
     .lean()
     .exec();
 
-const newUser = (user) => userModel.create({ ...user });
+const createUser = (user) => userModel.create({ ...user });
+
+const createDriver = (driver) => driverModel.create({ ...driver });
 
 const deleteUser = (userId) => userModel.findOneAndDelete({ _id: userId });
 
 export default {
-  newUser,
+  createUser,
+  createDriver,
   deleteUser,
   findUserByUsername,
 };
