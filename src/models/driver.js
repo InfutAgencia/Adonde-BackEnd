@@ -40,6 +40,10 @@ const driverSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      required: true,
+    },
   },
   {
     timestamps: true,
