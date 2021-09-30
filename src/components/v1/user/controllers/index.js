@@ -10,6 +10,24 @@ const createUser = async (req, res) => {
   });
 };
 
+const getUserById = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: "Succcess",
+    data: await userServices.getUserById(req.params.id),
+  });
+};
+
+const getDriverById = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: "Succcess",
+    data: await userServices.getDriverById(req.params.id),
+  });
+};
+
 export default {
   createUser,
+  getUserById,
+  getDriverById,
 };
