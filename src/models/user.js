@@ -12,6 +12,14 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isActive: {
+      type: Boolean,
+      required: true,
+    },
+    role: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
