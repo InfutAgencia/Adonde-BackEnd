@@ -4,9 +4,15 @@ const Schema = mongoose.Schema;
 const driverByCompanySchema = mongoose.Schema({
   driver: {
     type: Schema.ObjectId,
+    required: true,
   },
   company: {
     type: Schema.ObjectId,
+    required: true,
+  },
+  isActive: {
+    type: String,
+    required: true,
   },
 });
 

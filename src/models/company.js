@@ -19,6 +19,32 @@ const companySchema = mongoose.Schema(
       lowercase: true,
       required: true,
     },
+    email: {
+      type: String,
+      lowercase: true,
+      required: true,
+    },
+    zipCode: {
+      type: String,
+      required: true,
+    },
+    country: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    contactInformation: {
+      type: Object,
+      required: true,
+    },
+    isActive: {
+      type: Boolean,
+      require: true,
+      default: true,
+    },
   },
   {
     timestamps: true,
@@ -26,3 +52,5 @@ const companySchema = mongoose.Schema(
 );
 
 const companyModel = mongoose.model("companies", companySchema);
+
+export default companyModel;

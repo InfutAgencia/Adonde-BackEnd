@@ -3,6 +3,7 @@ import boom from "@hapi/boom";
 import S3Utility from "../../../../utils/S3";
 import userDao from "../dao";
 import env from "../../../../configs";
+import companyService from "../../company/services";
 
 const s3 = new S3Utility();
 
@@ -13,6 +14,8 @@ const createUser = async ({ newUser, files }) => {
 
   if (validateUniqueUsername)
     throw boom.badRequest(`${newUser.username} already exists`);
+
+  await companyService.getCompanyById(newUser.company);
 
   const encryptedPassword = cryptoJs.AES.encrypt(
     newUser.password,
@@ -73,8 +76,17 @@ const createUser = async ({ newUser, files }) => {
   let createdUser = await userDao.createUser(newUser);
   newUser.user = createdUser._id;
 
-  if (newUser.role === "DRIVER")
+  if (newUser.role === "DRIVER") {
     createdUser = await userDao.createDriver(newUser);
+
+    const driverByCompany = {
+      driver: createdUser._id,
+      company: newUser.company,
+      isActive: newUser.isActive,
+    };
+
+    await companyService.createDriverByCompany(driverByCompany);
+  }
 
   return createdUser;
 };
