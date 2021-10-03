@@ -1,5 +1,9 @@
 import joi from "joi";
 
+import joiObjectid from "joi-objectid";
+
+const objectId = joiObjectid(joi);
+
 const createUserSchema = joi.object({
   username: joi
     .string()
@@ -37,7 +41,7 @@ const createUserSchema = joi.object({
   city: joi.string().trim().required().lowercase().messages({
     "any.required": "city is required",
   }),
-  company: joi.string().trim().required({
+  company: objectId().required().messages({
     "any.required": "company is required",
   }),
 });
