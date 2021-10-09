@@ -19,6 +19,9 @@ const getDriverById = (id) => driverModel.findOne({ _id: id });
 
 const deleteUser = (userId) => userModel.findOneAndDelete({ _id: userId });
 
+const updateUser = (userId, user) =>
+  userModel.findOneAndUpdate({ _id: userId }, { $set: user }).lean().exec();
+
 export default {
   createUser,
   createDriver,
@@ -26,4 +29,5 @@ export default {
   getDriverById,
   deleteUser,
   findUserByUsername,
+  updateUser,
 };

@@ -26,8 +26,26 @@ const getDriverById = async (req, res) => {
   });
 };
 
+const resetPassword = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: "Success",
+    data: await userServices.resetPassword(req.body.username),
+  });
+};
+
+const updateUser = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: "Success",
+    data: await userServices.updateUser(req.params.username, { ...req.body }),
+  });
+};
+
 export default {
   createUser,
   getUserById,
   getDriverById,
+  resetPassword,
+  updateUser,
 };
