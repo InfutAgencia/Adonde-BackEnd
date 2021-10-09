@@ -1,10 +1,4 @@
-import SES, {
-  CreateTemplateRequest,
-  ListTemplatesRequest,
-  SendTemplatedEmailRequest,
-  VerifyEmailIdentityRequest,
-  UpdateTemplateRequest,
-} from "aws-sdk/clients/ses";
+import SES from "aws-sdk/clients/ses";
 import nodemailer from "nodemailer";
 import handlebars from "handlebars";
 import boom from "@hapi/boom";

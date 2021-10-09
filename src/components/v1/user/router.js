@@ -17,6 +17,12 @@ router.post(
   asyncHandler(userController.createUser)
 );
 
+router.post(
+  "/reset",
+  requestSchemaHandler(userSchemas.resetPasswordSchema),
+  asyncHandler(userController.resetPassword)
+);
+
 router.get(
   "/:id",
   loggedIn,
@@ -29,6 +35,13 @@ router.get(
   loggedIn,
   requestSchemaHandler(userSchemas.getDriverByIdSchema, "params"),
   asyncHandler(userController.getDriverById)
+);
+
+router.patch(
+  "/:username",
+  requestSchemaHandler(userSchemas.getUserByUsernameSchema, "params"),
+  requestSchemaHandler(userSchemas.updateUserSchema),
+  asyncHandler(userController.updateUser)
 );
 
 export default router;
