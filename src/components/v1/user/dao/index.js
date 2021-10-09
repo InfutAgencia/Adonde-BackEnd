@@ -1,5 +1,6 @@
 import driverModel from "../../../../models/driver";
 import userModel from "../../../../models/user";
+import driverLocationModel from "../../../../models/driverLocation";
 
 const findUserByUsername = (username) =>
   userModel
@@ -22,6 +23,9 @@ const deleteUser = (userId) => userModel.findOneAndDelete({ _id: userId });
 const updateUser = (userId, user) =>
   userModel.findOneAndUpdate({ _id: userId }, { $set: user }).lean().exec();
 
+const createDriverLocation = (driverLocation) =>
+  driverLocationModel.create({ ...driverLocation });
+
 export default {
   createUser,
   createDriver,
@@ -30,4 +34,5 @@ export default {
   deleteUser,
   findUserByUsername,
   updateUser,
+  createDriverLocation,
 };

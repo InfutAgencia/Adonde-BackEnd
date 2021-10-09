@@ -3,6 +3,7 @@ import getUserById from "./getUserById";
 import getDriverById from "./getDriverById";
 import resetPassword from "./resetPassword";
 import updateUser from "./updateUser";
+import createDriverLocation from "./createDriverLocation";
 
 export default {
   createUser,
@@ -10,4 +11,5 @@ export default {
   getDriverById,
   resetPassword,
   updateUser,
+  createDriverLocation,
 };

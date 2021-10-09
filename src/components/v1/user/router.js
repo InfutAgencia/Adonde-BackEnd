@@ -23,6 +23,13 @@ router.post(
   asyncHandler(userController.resetPassword)
 );
 
+router.post(
+  "/driver-location",
+  loggedIn,
+  requestSchemaHandler(userSchemas.createDriverLocationSchema),
+  asyncHandler(userController.createDriverLocation)
+);
+
 router.get(
   "/:id",
   loggedIn,
