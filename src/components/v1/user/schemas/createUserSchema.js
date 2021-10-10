@@ -41,8 +41,10 @@ const createUserSchema = joi.object({
   city: joi.string().trim().required().lowercase().messages({
     "any.required": "city is required",
   }),
-  company: objectId().required().messages({
-    "any.required": "company is required",
+  company: objectId().when("role", {
+    is: joi.equal("DRIVER"),
+    then: objectId().required(),
+    otherwise: joi.valid(null),
   }),
 });
 

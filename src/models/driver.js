@@ -28,11 +28,11 @@ const driverSchema = mongoose.Schema(
       lowercase: true,
       required: true,
     },
-    photo: {
+    driverLicenseFront: {
       type: String,
-      required: false,
+      required: true,
     },
-    driverLicense: {
+    driverLicenseBack: {
       type: String,
       required: true,
     },
@@ -41,6 +41,10 @@ const driverSchema = mongoose.Schema(
       required: true,
     },
     isActive: {
+      type: Boolean,
+      required: true,
+    },
+    connectStatus: {
       type: Boolean,
       required: true,
     },
