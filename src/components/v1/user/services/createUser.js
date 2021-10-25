@@ -28,15 +28,13 @@ const createUser = async ({ newUser, files }) => {
   if (files.length !== 0) {
     await Promise.all(
       files.map(async (file) => {
-        if (
-          file.fieldname === "photo" &&
-          (file.mimetype === "image/png" || file.mimetype === "image/jpeg")
-        ) {
+        if (file.name === "photo" && file.type.includes("image")) {
+          let newBuffer = Buffer.from(file.uri, "base64");
           let uploadPayload = {
-            bufferFile: file.buffer,
-            fileName: `${file.fieldname} - ${newUser.email}`,
+            bufferFile: newBuffer,
+            fileName: `${file.name} - ${newUser.email}.jpeg`,
             bucketName: env.AWS_BUCKET_USER_PHOTOS,
-            mimeType: file.mimetype,
+            mimeType: file.type,
           };
 
           let fileUpload = await s3.storeFileBucket(uploadPayload);
@@ -52,35 +50,21 @@ const createUser = async ({ newUser, files }) => {
   let createdUser = await userDao.createUser(newUser);
 
   if (newUser.role === "DRIVER") {
-    if (files.length !== 4 && files.length !== 3)
-      throw boom.badRequest(`Error, all files are required`);
-    files.forEach((value) => {
-      if (
-        value.fieldname !== "photo" &&
-        value.fieldname !== "driverLicenseFront" &&
-        value.fieldname !== "criminalRecordCertificate" &&
-        value.fieldname !== "driverLicenseBack"
-      )
-        throw boom.badRequest(
-          `Error (driverLicenseFront, driverLicenseBack, criminalRecordCertificate) are required`
-        );
-
-      if (
-        value.mimetype !== "image/png" &&
-        value.mimetype !== "application/pdf" &&
-        value.mimetype !== "image/jpeg"
-      )
-        throw boom.badRequest(`Error, file type is not allowed`);
-      return;
-    });
-
     await Promise.all(
       files.map(async (file) => {
+        let newBuffer = Buffer.from(file.uri, "base64");
+        let fileName =
+          file.name === "criminalRecordCertificate"
+            ? `${file.name} - ${newUser.email}.pdf`
+            : file.type === "image/png"
+            ? `${file.name} - ${newUser.email}.png`
+            : `${file.name} - ${newUser.email}.jpeg`;
+
         let uploadPayload = {
-          bufferFile: file.buffer,
-          fileName: `${file.fieldname} - ${newUser.email}`,
+          bufferFile: newBuffer,
+          fileName: fileName,
           bucketName: env.AWS_BUCKET_DRIVER_DOCUMENTS,
-          mimeType: file.mimetype,
+          mimeType: file.type,
         };
 
         let fileUpload = await s3.storeFileBucket(uploadPayload);

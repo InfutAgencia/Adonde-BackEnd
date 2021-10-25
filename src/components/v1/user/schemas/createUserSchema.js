@@ -46,6 +46,35 @@ const createUserSchema = joi.object({
     then: objectId().required(),
     otherwise: joi.valid(null),
   }),
+  files: joi
+    .array()
+    .items({
+      name: joi
+        .string()
+        .trim()
+        .valid(
+          "photo",
+          "driverLicenseFront",
+          "driverLicenseBack",
+          "criminalRecordCertificate"
+        )
+        .required()
+        .messages({
+          "any.required": "Error, file type is not allowed",
+        }),
+      type: joi
+        .string()
+        .trim()
+        .when("name", {
+          is: joi.equal("criminalRecordCertificate"),
+          then: joi.equal("application/pdf").required(),
+          otherwise: joi.valid("image/png", "image/jpeg").required(),
+        })
+        .required(),
+      uri: joi.string().trim().required(),
+    })
+    .min(3)
+    .required(),
 });
 
 export default createUserSchema;
