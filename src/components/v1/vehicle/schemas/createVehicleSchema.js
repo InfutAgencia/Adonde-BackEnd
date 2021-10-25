@@ -50,6 +50,22 @@ const createVehicleSchema = joi.object({
   isActive: joi.boolean().required().messages({
     "any.required": "isActive is required",
   }),
+  files: joi
+    .array()
+    .items({
+      name: joi
+        .string()
+        .trim()
+        .valid("identification", "photo")
+        .required()
+        .messages({
+          "any.required": "Error, file type is not allowed",
+        }),
+      type: joi.string().trim().valid("image/png", "image/jpeg").required(),
+      uri: joi.string().trim().required(),
+    })
+    .min(2)
+    .required(),
 });
 
 export default createVehicleSchema;

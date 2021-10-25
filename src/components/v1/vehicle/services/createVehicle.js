@@ -9,34 +9,23 @@ const s3 = new S3Utility();
 const createVehicle = async ({ newVehicle, files }) => {
   await userServices.getDriverById(newVehicle.driver);
 
-  if (files.length !== 2)
-    throw boom.badRequest(`Error, all files are required`);
-
-  files.forEach((value) => {
-    if (value.fieldname !== "photo" && value.fieldname !== "identification")
-      throw boom.badRequest(`Error (photo, identification) are required`);
-
-    if (
-      value.mimetype !== "image/png" &&
-      value.mimetype !== "application/pdf" &&
-      value.mimetype !== "image/jpeg"
-    )
-      throw boom.badRequest(`Error, file type is not allowed`);
-    return;
-  });
-
   await Promise.all(
     files.map(async (file) => {
       let bucketName =
-        file.fieldname === "photo"
+        file.name === "photo"
           ? env.AWS_BUCKET_VEHICLE_PHOTOS
           : env.AWS_BUCKET_VEHICLE_DOCUMENTS;
 
+      let newBuffer = Buffer.from(file.uri, "base64");
+
       let uploadPayload = {
-        bufferFile: file.buffer,
-        fileName: `${file.fieldname} - ${newVehicle.plate}`,
+        bufferFile: newBuffer,
+        fileName:
+          file.type === "image/png"
+            ? `${file.name} - ${newVehicle.plate}.png`
+            : `${file.name} - ${newVehicle.plate}.jpeg`,
         bucketName: bucketName,
-        mimeType: file.mimetype,
+        mimeType: file.type,
       };
 
       let fileUpload = await s3.storeFileBucket(uploadPayload);

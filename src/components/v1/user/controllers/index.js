@@ -1,8 +1,7 @@
 import userServices from "../services";
 
 const createUser = async (req, res) => {
-  const newUser = req.body;
-  const files = req.files;
+  const { files, ...newUser } = req.body;
   res.status(201).json({
     status: 201,
     message: "Success",
