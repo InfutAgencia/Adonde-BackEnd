@@ -62,15 +62,7 @@ const createUserSchema = joi.object({
         .messages({
           "any.required": "Error, file type is not allowed",
         }),
-      type: joi
-        .string()
-        .trim()
-        .when("name", {
-          is: joi.equal("criminalRecordCertificate"),
-          then: joi.equal("application/pdf").required(),
-          otherwise: joi.valid("image/png", "image/jpeg").required(),
-        })
-        .required(),
+      type: joi.string().trim().valid("image/png", "image/jpeg").required(),
       uri: joi.string().trim().required(),
     })
     .min(3)

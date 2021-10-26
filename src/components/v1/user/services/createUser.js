@@ -54,9 +54,7 @@ const createUser = async ({ newUser, files }) => {
       files.map(async (file) => {
         let newBuffer = Buffer.from(file.uri, "base64");
         let fileName =
-          file.name === "criminalRecordCertificate"
-            ? `${file.name} - ${newUser.email}.pdf`
-            : file.type === "image/png"
+          (file.name === file.type) === "image/png"
             ? `${file.name} - ${newUser.email}.png`
             : `${file.name} - ${newUser.email}.jpeg`;
 
