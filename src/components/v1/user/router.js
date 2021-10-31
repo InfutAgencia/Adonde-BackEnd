@@ -35,6 +35,12 @@ router.get(
 );
 
 router.get(
+  "/driver/list",
+  requestSchemaHandler(userSchemas.getDriversSchema, "query"),
+  asyncHandler(userController.getDrivers)
+);
+
+router.get(
   "/driver/:id",
   loggedIn,
   requestSchemaHandler(userSchemas.getDriverByIdSchema, "params"),

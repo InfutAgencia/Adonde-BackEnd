@@ -15,6 +15,10 @@ const driverSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    email: {
+      type: String,
+      required: true,
+    },
     lastname: {
       type: String,
       required: true,
@@ -46,6 +50,10 @@ const driverSchema = mongoose.Schema(
     },
     connectStatus: {
       type: Boolean,
+      required: true,
+    },
+    points: {
+      type: Number,
       required: true,
     },
   },

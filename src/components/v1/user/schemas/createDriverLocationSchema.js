@@ -5,7 +5,7 @@ const objectId = joiObjectid(joi);
 
 const createDriverLocationSchema = joi.object({
   driver: objectId().required().messages({
-    "any.required": "company is required",
+    "any.required": "driver is required",
   }),
   country: joi.string().trim().uppercase().required().messages({
     "any.required": "country is required",

@@ -20,6 +20,9 @@ const getCompanies = ({ page, limit, query }) =>
 const getCompaniesCount = ({ query }) =>
   companyModel.find(query.filters).countDocuments().lean().exec();
 
+const getCompanyByDriverId = (id) =>
+  driverByCompanyModel.findOne({ driver: id });
+
 const createDriverByCompany = (driverByCompany) =>
   driverByCompanyModel.create({ ...driverByCompany });
 
@@ -30,4 +33,5 @@ export default {
   getCompanies,
   getCompaniesCount,
   createDriverByCompany,
+  getCompanyByDriverId,
 };
