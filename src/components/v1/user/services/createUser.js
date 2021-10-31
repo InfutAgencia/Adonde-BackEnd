@@ -83,15 +83,21 @@ const createUser = async ({ newUser, files }) => {
 
     newUser.connectStatus = true;
     newUser.user = createdUser._id;
-    createdUser = await userDao.createDriver(newUser);
+    newUser.points = 0;
+
+    const newDriver = await userDao.createDriver(newUser);
+    createdUser._doc.driver = await userDao.getDriverById(newDriver._id);
 
     const driverByCompany = {
-      driver: createdUser._id,
+      driver: newDriver._id,
       company: newUser.company,
-      isActive: newUser.isActive,
+      isActive: JSON.parse(newUser.isActive),
     };
 
     await companyService.createDriverByCompany(driverByCompany);
+    createdUser._doc.company = await companyService.getCompanyByDriverId(
+      newDriver._id
+    );
   }
 
   return createdUser;
