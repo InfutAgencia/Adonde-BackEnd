@@ -52,6 +52,10 @@ const driverSchema = mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    deviceId: {
+      type: String,
+      required: true,
+    },
     points: {
       type: Number,
       required: true,

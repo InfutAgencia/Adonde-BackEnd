@@ -1,4 +1,5 @@
 import companyModel from "../../../../models/company";
+import driverModel from "../../../../models/driver";
 import driverByCompanyModel from "../../../../models/driverByCompany";
 
 const findCompanyByName = (name) =>
@@ -20,8 +21,47 @@ const getCompanies = ({ page, limit, query }) =>
 const getCompaniesCount = ({ query }) =>
   companyModel.find(query.filters).countDocuments().lean().exec();
 
-const getCompanyByDriverId = (id) =>
-  driverByCompanyModel.findOne({ driver: id });
+const getCompanyByDriverId = (id) => {
+  const company = driverByCompanyModel
+    .aggregate([
+      {
+        $match: {
+          driver: id,
+        },
+      },
+      {
+        $lookup: {
+          from: "companies",
+          localField: "company",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $unwind: {
+          path: "$company",
+        },
+      },
+      {
+        $project: {
+          _id: "$$ROOT.company._id",
+          isActive: "$$ROOT.company.isActive",
+          name: "$$ROOT.company.name",
+          address: "$$ROOT.company.address",
+          phone: "$$ROOT.company.phone",
+          city: "$$ROOT.company.city",
+          email: "$$ROOT.company.email",
+          zipCode: "$$ROOT.company.zipCode",
+          country: "$$ROOT.company.country",
+          state: "$$ROOT.company.state",
+          contactInformation: "$$ROOT.company.contactInformation",
+        },
+      },
+    ])
+    .exec();
+
+  return company;
+};
 
 const createDriverByCompany = (driverByCompany) =>
   driverByCompanyModel.create({ ...driverByCompany });

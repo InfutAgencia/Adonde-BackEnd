@@ -46,6 +46,9 @@ const createUserSchema = joi.object({
     then: objectId().required(),
     otherwise: joi.valid(null),
   }),
+  deviceId: joi.string().trim().alphanum().required().messages({
+    "any.required": "deviceId is required",
+  }),
   files: joi
     .array()
     .items({
