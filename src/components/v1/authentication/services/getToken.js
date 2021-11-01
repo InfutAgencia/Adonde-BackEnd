@@ -1,12 +1,26 @@
 import cryptoJs from "crypto-js";
 import boom from "@hapi/boom";
 import jwt from "jsonwebtoken";
-
+import getDriverByUserId from "../../user/services/getDriverByUserId";
+import getCompanyByDriverId from "../../company/services/getCompanyByDriverId";
 import getUserByUsername from "../dao";
 import env from "../../../../configs";
 
 const getSessionToken = async ({ username, password }) => {
   const user = await getUserByUsername(username);
+
+  if (user && user.role === "DRIVER") {
+    const driver = await getDriverByUserId(user._id);
+    const company = await getCompanyByDriverId(driver._id);
+    if (!company)
+      throw boom.badRequest(
+        `There is not a company associated to username: ${username}`
+      );
+
+    user.deviceId = driver.deviceId;
+    user.companyId = company[0]._id;
+    user.companyName = company[0].name;
+  }
 
   if (!user) throw boom.unauthorized("Wrong credentials");
   const decryptedPassword = cryptoJs.AES.decrypt(

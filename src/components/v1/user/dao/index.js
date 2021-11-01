@@ -164,6 +164,8 @@ const updateUser = (userId, user) =>
 const createDriverLocation = (driverLocation) =>
   driverLocationModel.create({ ...driverLocation });
 
+const getDriverByUserId = (user) => driverModel.findOne({ user });
+
 export default {
   createUser,
   createDriver,
@@ -173,6 +175,7 @@ export default {
   getAvailableDriversByCompany,
   getDrivers,
   getDriversCount,
+  getDriverByUserId,
   deleteUser,
   findUserByUsername,
   updateUser,

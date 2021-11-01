@@ -95,9 +95,10 @@ const createUser = async ({ newUser, files }) => {
     };
 
     await companyService.createDriverByCompany(driverByCompany);
-    createdUser._doc.company = await companyService.getCompanyByDriverId(
+    const createdCompany = await companyService.getCompanyByDriverId(
       newDriver._id
     );
+    createdUser._doc.company = createdCompany[0];
   }
 
   return createdUser;
