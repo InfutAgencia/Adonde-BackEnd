@@ -17,6 +17,7 @@ const getSessionToken = async ({ username, password }) => {
         `There is not a company associated to username: ${username}`
       );
 
+    user.driverId = driver._id;
     user.deviceId = driver.deviceId;
     user.companyId = company[0]._id;
     user.companyName = company[0].name;
