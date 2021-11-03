@@ -57,5 +57,4 @@ const createTrip = async (newTrip) => {
   createdTrip._doc.driver = selectedDriver;
   return createdTrip;
 };
-
 export default createTrip;
