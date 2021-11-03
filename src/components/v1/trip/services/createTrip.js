@@ -45,7 +45,7 @@ const createTrip = async (newTrip) => {
     driver: selectedDriver._id,
     trip: createdTrip._id,
     vehicle: selectedDriver.vehicle._id,
-    company: companyDriver._id || "",
+    company: companyDriver[0]._id || "",
     status: newTrip.status,
   };
   //Craete tripByDriver
