@@ -175,6 +175,12 @@ const updateDriverLocationByDriverId = (driver, driverLocation) =>
     .lean()
     .exec();
 
+const updateDriver = (id, updatedDriverInformation) =>
+  driverModel
+    .findByIdAndUpdate({ _id: id }, { $set: updatedDriverInformation })
+    .lean()
+    .exec();
+
 export default {
   findUserByUsername,
   createUser,
@@ -191,4 +197,5 @@ export default {
   createDriverLocation,
   getDriverLocationByDriverId,
   updateDriverLocationByDriverId,
+  updateDriver,
 };

@@ -8,28 +8,9 @@ const createVehicleSchema = joi.object({
   driver: objectId().required().messages({
     "any.required": "user is required",
   }),
-  brand: joi
-    .string()
-    .trim()
-    .uppercase()
-    .valid(
-      "KIA",
-      "MAZDA",
-      "NISSAN",
-      "PEUGEOT",
-      "RENAULT",
-      "SUZUKI",
-      "TOYOTA",
-      "VOLSKWAGEN",
-      "CHEVROLET",
-      "AUDI",
-      "BMW",
-      "OTHERS"
-    )
-    .required()
-    .messages({
-      "any.required": "brand is required",
-    }),
+  brand: joi.string().trim().uppercase().required().messages({
+    "any.required": "brand is required",
+  }),
   model: joi.string().trim().required().messages({
     "any.required": "model is required",
   }),

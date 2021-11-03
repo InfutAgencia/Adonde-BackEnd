@@ -8,6 +8,7 @@ import updateUser from "./updateUser";
 import createDriverLocation from "./createDriverLocation";
 import getDriverLocationByDriverId from "./getDriverLocationByDriverId";
 import updateDriverLocationByDriverId from "./updateDriverLocationByDriverId";
+import updateDriver from "./updateDriver";
 
 export default {
   createUser,
@@ -20,4 +21,5 @@ export default {
   createDriverLocation,
   getDriverLocationByDriverId,
   updateDriverLocationByDriverId,
+  updateDriver,
 };

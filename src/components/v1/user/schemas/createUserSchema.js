@@ -18,7 +18,7 @@ const createUserSchema = joi.object({
     "any.required":
       "password does not fullfill the requirements. At least one letter lowercase, one uppercase, one digit and one special character",
   }),
-  isActive: joi.boolean().required().default(false),
+  isActive: joi.boolean().required().default(true),
   role: joi.string().trim().valid("DRIVER", "USER", "ADMIN", "SUPER ADMIN"),
   identification: joi.string().trim().required().messages({
     "any.required": "identification is required",
