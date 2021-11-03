@@ -18,6 +18,9 @@ const getSessionToken = async ({ username, password }) => {
       );
 
     user.driverId = driver._id;
+    user.name = driver.name;
+    user.lastname = driver.lastname;
+    user.points = driver.points;
     user.deviceId = driver.deviceId;
     user.companyId = company[0]._id;
     user.companyName = company[0].name;
