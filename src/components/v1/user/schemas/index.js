@@ -6,6 +6,7 @@ import getUserByUsernameSchema from "./getUserByUsernameSchema";
 import updateUserSchema from "./updateUserSchema";
 import createDriverLocationSchema from "./createDriverLocationSchema";
 import getDriversSchema from "./getDriversSchema";
+import updateDriverSchema from "./updateDriverSchema";
 
 export default {
   createUserSchema,
@@ -16,4 +17,5 @@ export default {
   resetPasswordSchema,
   updateUserSchema,
   createDriverLocationSchema,
+  updateDriverSchema,
 };

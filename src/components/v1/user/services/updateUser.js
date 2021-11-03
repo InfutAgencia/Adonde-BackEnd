@@ -8,16 +8,12 @@ const updateUser = async (username, updatedUserInformation) => {
   if (!usernameValidation) throw boom.badRequest(`${username} no found`);
   let userToUpdate = { ...updatedUserInformation };
 
-  if (
-    !updatedUserInformation.password ||
-    updatedUserInformation.password.trim() === ""
-  )
-    throw boom.badRequest(`password does not fullfill the requirements`);
-
-  userToUpdate.password = cryptoJs.AES.encrypt(
-    updatedUserInformation.password,
-    env.CRYPTO_SECRET
-  ).toString();
+  if (updatedUserInformation.password) {
+    userToUpdate.password = cryptoJs.AES.encrypt(
+      updatedUserInformation.password,
+      env.CRYPTO_SECRET
+    ).toString();
+  }
 
   const updateConfirmation = await userDao.updateUser(usernameValidation._id, {
     ...userToUpdate,

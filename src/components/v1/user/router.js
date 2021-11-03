@@ -20,18 +20,18 @@ router.post(
   asyncHandler(userController.resetPassword)
 );
 
-router.post(
-  "/driver-location",
-  loggedIn,
-  requestSchemaHandler(userSchemas.createDriverLocationSchema),
-  asyncHandler(userController.createDriverLocation)
-);
-
 router.get(
   "/:id",
   loggedIn,
   requestSchemaHandler(userSchemas.getUserByIdSchema, "params"),
   asyncHandler(userController.getUserById)
+);
+
+router.patch(
+  "/:username",
+  requestSchemaHandler(userSchemas.getUserByUsernameSchema, "params"),
+  requestSchemaHandler(userSchemas.updateUserSchema),
+  asyncHandler(userController.updateUser)
 );
 
 router.get(
@@ -47,11 +47,19 @@ router.get(
   asyncHandler(userController.getDriverById)
 );
 
+router.post(
+  "/driver-location",
+  loggedIn,
+  requestSchemaHandler(userSchemas.createDriverLocationSchema),
+  asyncHandler(userController.createDriverLocation)
+);
+
 router.patch(
-  "/:username",
-  requestSchemaHandler(userSchemas.getUserByUsernameSchema, "params"),
-  requestSchemaHandler(userSchemas.updateUserSchema),
-  asyncHandler(userController.updateUser)
+  "/driver/:id",
+  loggedIn,
+  requestSchemaHandler(userSchemas.getDriverByIdSchema, "params"),
+  requestSchemaHandler(userSchemas.updateDriverSchema),
+  asyncHandler(userController.updateDriver)
 );
 
 export default router;

@@ -49,6 +49,14 @@ const updateUser = async (req, res) => {
   });
 };
 
+const updateDriver = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    message: "Success",
+    data: await userServices.updateDriver(req.params.id, { ...req.body }),
+  });
+};
+
 const createDriverLocation = async (req, res) => {
   res.status(200).json({
     status: 200,
@@ -64,5 +72,6 @@ export default {
   getDrivers,
   resetPassword,
   updateUser,
+  updateDriver,
   createDriverLocation,
 };
