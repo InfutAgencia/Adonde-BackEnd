@@ -12,11 +12,30 @@ const findUserByUsername = (username) =>
 
 const createUser = (user) => userModel.create({ ...user });
 
-const createDriver = (driver) => driverModel.create({ ...driver });
-
 const getUserById = (id) => userModel.findOne({ _id: id });
 
+const updateUser = (userId, user) =>
+  userModel.findOneAndUpdate({ _id: userId }, { $set: user }).lean().exec();
+
+const deleteUser = (userId) => userModel.findOneAndDelete({ _id: userId });
+
+const createDriver = (driver) => driverModel.create({ ...driver });
+
+const getDriverByUserId = (user) => driverModel.findOne({ user });
+
 const getDriverById = (id) => driverModel.findOne({ _id: id });
+
+const getDrivers = ({ page, limit, query }) =>
+  driverModel
+    .find(query.filters)
+    .skip(Number(page))
+    .limit(Number(limit))
+    .sort({ ...query.order })
+    .lean()
+    .exec();
+
+const getDriversCount = ({ query }) =>
+  driverModel.find(query.filters).countDocuments().lean().exec();
 
 const getAvailableDrivers = ({ query }) => {
   const drivers = driverModel
@@ -144,40 +163,32 @@ const getAvailableDriversByCompany = ({ query }) => {
   return drivers;
 };
 
-const getDrivers = ({ page, limit, query }) =>
-  driverModel
-    .find(query.filters)
-    .skip(Number(page))
-    .limit(Number(limit))
-    .sort({ ...query.order })
-    .lean()
-    .exec();
-
-const getDriversCount = ({ query }) =>
-  driverModel.find(query.filters).countDocuments().lean().exec();
-
-const deleteUser = (userId) => userModel.findOneAndDelete({ _id: userId });
-
-const updateUser = (userId, user) =>
-  userModel.findOneAndUpdate({ _id: userId }, { $set: user }).lean().exec();
-
 const createDriverLocation = (driverLocation) =>
   driverLocationModel.create({ ...driverLocation });
 
-const getDriverByUserId = (user) => driverModel.findOne({ user });
+const getDriverLocationByDriverId = (driver) =>
+  driverLocationModel.findOne({ driver: driver }).lean();
+
+const updateDriverLocationByDriverId = (driver, driverLocation) =>
+  driverLocationModel
+    .findOneAndUpdate({ driver: driver }, { $set: driverLocation })
+    .lean()
+    .exec();
 
 export default {
+  findUserByUsername,
   createUser,
-  createDriver,
   getUserById,
+  updateUser,
+  deleteUser,
+  createDriver,
+  getDriverByUserId,
   getDriverById,
-  getAvailableDrivers,
-  getAvailableDriversByCompany,
   getDrivers,
   getDriversCount,
-  getDriverByUserId,
-  deleteUser,
-  findUserByUsername,
-  updateUser,
+  getAvailableDrivers,
+  getAvailableDriversByCompany,
   createDriverLocation,
+  getDriverLocationByDriverId,
+  updateDriverLocationByDriverId,
 };
