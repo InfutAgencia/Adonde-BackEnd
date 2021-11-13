@@ -10,9 +10,6 @@ const createTrip = async (newTrip) => {
   //Get connect and available drivers
   let availableDrivers = await getAvailableDrivers(newTrip.company);
 
-  if (!availableDrivers || !availableDrivers.length)
-    throw boom.badRequest(`There isn't available drivers`);
-
   while (selectedDriver === null && availableDrivers.length) {
     // Get selected driver by points
     let possibleDriver = availableDrivers.reduce((prev, current) =>

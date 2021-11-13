@@ -1,5 +1,5 @@
 import userDao from "../dao";
-import mongoose from "mongoose";
+import boom from "@hapi/boom";
 
 const getAvailableDrivers = async (company) => {
   let result = [];
@@ -13,12 +13,15 @@ const getAvailableDrivers = async (company) => {
     result = await userDao.getAvailableDriversByCompany({
       query,
     });
+
+    if(!result || !result.length) throw boom.notFound(`There aren't available drivers to company selected`)
   }
 
-  if (!company || !result.length) {
+  if (!company) {
     result = await userDao.getAvailableDrivers({
       query,
     });
+    if(!result || !result.length) throw boom.notFound(`There aren't available drivers`)
   }
 
   return result;
