@@ -27,4 +27,12 @@ router.get(
   asyncHandler(tripController.getTripById)
 );
 
+router.patch(
+  "/:id",
+  loggedIn,
+  requestSchemaHandler(tripSchemas.getTripByIdSchema, "params"),
+  requestSchemaHandler(tripSchemas.updateTripSchema),
+  asyncHandler(tripController.updateTrip)
+);
+
 export default router;
