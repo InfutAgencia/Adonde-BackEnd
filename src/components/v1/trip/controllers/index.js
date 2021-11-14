@@ -27,8 +27,19 @@ const getTrips = async (req, res) => {
   });
 };
 
+const updateTrip = async (req, res) => {
+  let id = req.params.id;
+  let body = req.body;
+  res.status(200).json({
+    status: 200,
+    message: "Success",
+    data: await tripServices.updateTrip(id, body),
+  });
+};
+
 export default {
   createTrip,
   getTripById,
   getTrips,
+  updateTrip,
 };
