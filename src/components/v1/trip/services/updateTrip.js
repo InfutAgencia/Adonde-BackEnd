@@ -29,6 +29,8 @@ const acceptTrip = async (id, { status, driver }) => {
   if (status === "COMPLETED") {
   }
 
+  if (!result || result === "")
+    throw boom.badRequest(`Error at moment to update the trip`);
   return result;
 };
 
