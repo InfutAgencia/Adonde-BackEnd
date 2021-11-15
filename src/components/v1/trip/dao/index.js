@@ -14,10 +14,14 @@ const updateTrip = (id, status) =>
 const updateTripByDriver = (query, status) =>
   tripByDriverModel.findOneAndUpdate(query, { $set: { status } }).lean().exec();
 
+const getTripsByDriver = (query) =>
+  tripByDriverModel.find(query.filters).lean().exec();
+
 export default {
   createTrip,
   createTripByDriver,
   getTripById,
   updateTrip,
   updateTripByDriver,
+  getTripsByDriver,
 };
