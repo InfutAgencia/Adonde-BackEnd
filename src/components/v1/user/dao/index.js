@@ -57,6 +57,19 @@ const getAvailableDrivers = ({ query }) => {
         },
       },
       {
+        $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $unwind: {
+          path: "$userInfo",
+        },
+      },
+      {
         $project: {
           isActive: 1,
           identification: 1,
@@ -71,6 +84,7 @@ const getAvailableDrivers = ({ query }) => {
           connectStatus: 1,
           user: 1,
           points: 1,
+          photo: "$userInfo.photo",
           location: {
             country: "$$ROOT.location.country",
             state: "$$ROOT.location.state",
@@ -109,6 +123,19 @@ const getAvailableDriversByCompany = ({ query }) => {
       },
       {
         $lookup: {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "userInfo",
+        },
+      },
+      {
+        $unwind: {
+          path: "$userInfo",
+        },
+      },
+      {
+        $lookup: {
           from: "driversbycompanies",
           localField: "_id",
           foreignField: "driver",
@@ -141,6 +168,7 @@ const getAvailableDriversByCompany = ({ query }) => {
           connectStatus: 1,
           user: 1,
           points: 1,
+          photo: "$userInfo.photo",
           location: {
             country: "$$ROOT.location.country",
             state: "$$ROOT.location.state",
